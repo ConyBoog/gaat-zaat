@@ -1,4 +1,4 @@
-_Store
-    .idea/
-        demo.iml
-            target
+.DS_Store
+demo.iml
+.idea
+target
