@@ -18,6 +18,7 @@ import platform.gateway.web.mapper.UserMapper;
  * The resource class of User.
  */
 @RestController
+@RequestMapping("/api")
 public class UserResource {
 
     @Autowired
