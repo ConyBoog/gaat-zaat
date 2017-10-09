@@ -1,0 +1,79 @@
+{
+	"id": "77d91683-af35-d18b-dd83-ec156af6330a",
+	"name": "platform-gateway",
+	"description": "",
+	"order": [
+		"612388d0-8cef-82b2-71a8-4328541ffe78",
+		"de06d91b-5c6b-9d07-1c13-e3af858e8f84"
+	],
+	"folders": [],
+	"folders_order": [],
+	"timestamp": 1506679539321,
+	"owner": "658580",
+	"public": false,
+	"requests": [
+		{
+			"id": "612388d0-8cef-82b2-71a8-4328541ffe78",
+			"headers": "Content-Type: application/json\nAccept: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "Accept",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{baseUrl}}/login",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;\n\nvar schema = {\n \"token\": {\n \"type\": \"string\"\n }\n};\n\nvar jsonData = JSON.parse(responseBody);\npostman.setEnvironmentVariable(\"token\", jsonData.token);\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1507546037517,
+			"name": "1. 登录",
+			"description": "",
+			"collectionId": "77d91683-af35-d18b-dd83-ec156af6330a",
+			"responses": [],
+			"rawModeData": "{\n\t\"login\":\"conyboog\",\n\t\"password\":\"111111\"\n}"
+		},
+		{
+			"id": "de06d91b-5c6b-9d07-1c13-e3af858e8f84",
+			"headers": "Authorization: Bearer {{token}}\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Bearer {{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{baseUrl}}/userItem/index",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1507545173393,
+			"name": "2. userItem列表",
+			"description": "",
+			"collectionId": "77d91683-af35-d18b-dd83-ec156af6330a",
+			"responses": []
+		}
+	]
+}

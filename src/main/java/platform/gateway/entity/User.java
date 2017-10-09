@@ -47,6 +47,9 @@ public class User implements Serializable{
     private Date birthday;
 
     @Column
+    private String roles;
+
+    @Column
     private Date createdDate;
 
     @Column
@@ -54,6 +57,7 @@ public class User implements Serializable{
 
     @Column
     private Boolean deleted;
+
 
     public User(){}
 
@@ -65,6 +69,7 @@ public class User implements Serializable{
         this.email = user.getEmail();
         this.gender = user.getGender();
         this.identityCardNumber = user.getIdentityCardNumber();
+        this.roles = user.getRoles();
         this.birthday = user.getBirthday();
         this.id = user.getId();
         this.createdDate = user.getCreatedDate();
@@ -128,6 +133,30 @@ public class User implements Serializable{
         this.gender = gender;
     }
 
+    public String getIdentityCardNumber() {
+        return identityCardNumber;
+    }
+
+    public void setIdentityCardNumber(String identityCardNumber) {
+        this.identityCardNumber = identityCardNumber;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
+
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -152,33 +181,19 @@ public class User implements Serializable{
         this.deleted = deleted;
     }
 
-    public String getIdentityCardNumber() {
-        return identityCardNumber;
-    }
-
-    public void setIdentityCardNumber(String identityCardNumber) {
-        this.identityCardNumber = identityCardNumber;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
     @Override
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
                 ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", email='" + email + '\'' +
                 ", gender=" + gender +
                 ", identityCardNumber='" + identityCardNumber + '\'' +
                 ", birthday=" + birthday +
+                ", roles=" + roles +
                 ", createdDate=" + createdDate +
                 ", updatedDate=" + updatedDate +
                 ", deleted=" + deleted +

@@ -9,10 +9,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import platform.common.GsonUtils;
 import platform.gateway.entity.AppUserDetails;
-import platform.gateway.entity.Role;
 import platform.gateway.entity.User;
-import platform.gateway.repository.RoleRepository;
 import platform.gateway.repository.UserRepository;
 
 import java.util.List;
@@ -23,6 +22,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@SuppressWarnings("unchecked")
 public class AppUserDetailsService implements UserDetailsService {
 
     private Logger logger = LoggerFactory.getLogger(AppUserDetailsService.class);
@@ -30,8 +30,6 @@ public class AppUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
@@ -50,12 +48,13 @@ public class AppUserDetailsService implements UserDetailsService {
             logger.info("CONY01010: Can't find user by login {}", login);
             throw new UsernameNotFoundException("User not found.");
         }
-        List<Role> roles;
-        try {
-            roles = roleRepository.findByUserId(user.getId());
-        } catch (Exception e) {
+        List<String> roles;
+        String userRoles = user.getRoles();
+        if (userRoles  == null) {
             logger.info("CONY01020: Can't find {}'s roles.", login);
             throw new UsernameNotFoundException("Query user roles failed.");
+        } else {
+            roles = GsonUtils.toList(userRoles);
         }
         return new AppUserDetails(user, roles);
     }

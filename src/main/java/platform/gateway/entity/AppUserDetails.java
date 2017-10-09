@@ -12,11 +12,11 @@ import java.util.List;
 
 public class AppUserDetails extends User implements org.springframework.security.core.userdetails.UserDetails {
 
-    private List<Role> roles;
+    private List<String> roles;
 
     public AppUserDetails(){}
 
-    public AppUserDetails(User user, List<Role> roles){
+    public AppUserDetails(User user, List<String> roles){
         super(user);
         this.roles = roles;
     }
@@ -27,8 +27,8 @@ public class AppUserDetails extends User implements org.springframework.security
             return AuthorityUtils.commaSeparatedStringToAuthorityList("");
         }
         StringBuilder commaBuilder = new StringBuilder();
-        for(Role role : roles){
-            commaBuilder.append(role.getRoleName()).append(",");
+        for(String role : roles){
+            commaBuilder.append(role).append(",");
         }
         String authorities = commaBuilder.substring(0,commaBuilder.length()-1);
         return AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
@@ -41,7 +41,7 @@ public class AppUserDetails extends User implements org.springframework.security
 
     @Override
     public String getUsername() {
-        return super.getName();
+        return super.getLogin();
     }
 
     @Override

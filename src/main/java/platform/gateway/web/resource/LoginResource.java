@@ -3,47 +3,36 @@ package platform.gateway.web.resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import platform.gateway.entity.AppUserDetails;
-import platform.gateway.security.AppAuthenticationProvider;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.*;
+import platform.gateway.security.AuthService;
+import platform.gateway.security.LoginNamePasswordRequest;
+import platform.gateway.security.LoginResponse;
 
 /**
  * Login gateway.
  */
-@Controller
+@RestController
 @RequestMapping("/")
 public class LoginResource {
 
     private Logger logger = LoggerFactory.getLogger(LoginResource.class);
 
     @Autowired
-    private AppAuthenticationProvider authenticationProvider;
+    protected AuthService authService;
 
     @RequestMapping( value = "login"
             , method = RequestMethod.POST)
-    public String doLogin (@RequestParam String login, @RequestParam String password, HttpServletRequest request) throws AuthenticationException {
-        logger.info("CONY01030: login -> {},", login);
-        if (login == null || password == null) {
+    public ResponseEntity<LoginResponse> doLogin(@RequestBody LoginNamePasswordRequest loginRequest) throws AuthenticationException {
+        logger.info("CONY01030: request -> {},", loginRequest);
+        if (loginRequest.getLogin() == null || loginRequest.getPassword() == null) {
             throw new BadCredentialsException("User name or password is empty.");
         }
-        Authentication authentication = new UsernamePasswordAuthenticationToken(login, password);
-        authentication = authenticationProvider.authenticate(authentication);
-        HttpSession session = request.getSession();
-        session.setAttribute("login", login);
-        session.setAttribute("name", authentication.getName());
-        AppUserDetails appUserDetails = new AppUserDetails();
-        appUserDetails.setName(authentication.getName());
-        request.setAttribute("userDetails", appUserDetails);
-        return "/home";
+        final String token = authService.login(loginRequest.getLogin(), loginRequest.getPassword());
+        LoginResponse response = new LoginResponse();
+        response.setToken(token);
+        return ResponseEntity.ok(response);
     }
 }
