@@ -3,6 +3,7 @@ package platform.gateway.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import platform.gateway.entity.AppUserDetails;
 
@@ -13,7 +14,11 @@ import java.util.Map;
 @Component
 public class JWTProvider {
 
-    private String secret = "gaatzaat";
+    @Value("${jwt.secret}")
+    private String secret;
+
+    @Value("${jwt.expTime}")
+    private Long expTime;
 
     private static final String CLAIM_KEY_USERNAME = "sub";
     private static final String CLAIM_KEY_CREATED = "created";
@@ -41,7 +46,7 @@ public class JWTProvider {
     }
 
     private Date generateExpirationDate() {
-        return new Date(System.currentTimeMillis() + 604800 * 1000);
+        return new Date(System.currentTimeMillis() + expTime * 1000);
     }
 
     public Claims getClaimsFromToken(String token) {

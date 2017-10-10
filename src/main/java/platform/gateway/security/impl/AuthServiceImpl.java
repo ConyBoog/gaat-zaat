@@ -1,6 +1,9 @@
 package platform.gateway.security.impl;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -9,13 +12,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import platform.gateway.entity.AppUserDetails;
 import platform.gateway.entity.User;
+import platform.gateway.entity.enumeration.Role;
 import platform.gateway.repository.UserRepository;
 import platform.gateway.security.AuthService;
 import platform.gateway.security.JWTProvider;
 import platform.gateway.service.AppUserDetailsService;
 
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -28,7 +31,8 @@ public class AuthServiceImpl implements AuthService {
 
     private UserRepository userRepository;
 
-    private String tokenHead = "Bearer ";
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
 
     @Autowired
     public AuthServiceImpl(
@@ -53,7 +57,9 @@ public class AuthServiceImpl implements AuthService {
         final String rawPassword = user.getPassword();
         user.setPassword(encoder.encode(rawPassword));
         user.setUpdatedDate(new Date());
-        user.setRoles("['USER']");
+        List<String> roles = Collections.singletonList(Role.ADMIN.name());
+        Gson gson = new GsonBuilder().create();
+        user.setRoles(gson.toJson(roles));
         user.setId(UUID.randomUUID().toString());
         return userRepository.save(user);
     }

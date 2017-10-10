@@ -1,4 +1,4 @@
-package platform.gateway.config;
+package platform.gateway.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -12,7 +12,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import platform.gateway.security.JwtAuthenticationTokenFilter;
 import platform.gateway.service.AppUserDetailsService;
 
 /**
@@ -49,6 +48,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                .antMatchers("/static/**").permitAll()
                 .antMatchers("/index").permitAll()// 对于获取token的rest api要允许匿名访问
                 .antMatchers("/login/**").permitAll()
                 // 除上面外的所有请求全部需要鉴权认证

@@ -3,6 +3,7 @@ package platform.gateway.security;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -31,10 +32,14 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Autowired
     private JWTProvider jwtProvider;
 
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
+
+    @Value("${jwt.tokenHeader}")
+    private String tokenHeader;
+
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        String tokenHead = "Bearer ";
-        String tokenHeader = "Authorization";
         String authHeader = httpServletRequest.getHeader(tokenHeader);
         if (authHeader != null && authHeader.startsWith(tokenHead)) {
             final String authToken = authHeader.substring(tokenHead.length());

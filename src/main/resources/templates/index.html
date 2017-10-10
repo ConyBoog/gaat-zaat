@@ -5,8 +5,16 @@
     <meta http-equiv="Content-Type" content="application/json; charset=UTF-8" />
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"/>
-    <script src="../static/js/bootstrap/bootstrap.js" type="javascript" ></script>
-    <script src="../static/js/jquery/jquery-3.2.1.js" type="javascript" ></script>
+    <script src="../static/js/bootstrap/bootstrap.js"></script>
+    <script src="../static/js/jquery/jquery-3.2.1.js"></script>
+    <script>
+        function postLogin() {
+            var login = $("input#login").val();
+            var password = $("input#password").val();
+            var json =
+            $.post("http://localhost:8080/login",)
+        }
+    </script>
     <style>
         body {
             padding-top: 50px;
@@ -66,13 +74,11 @@
             <p class="lead">
                 Might be the best platform for street dance.
             </p>
-            <div class="starter-template">
-                <form id="loginForm" action="http://localhost:8080/login" method="post" class="form-sign-in">
-                    <h2 class="form-sign-in-heading">Please login</h2>
-                    <input class="form-control" type="text" placeholder="your login name" name="login" required="required" />
-                    <input class="form-control" type="password" placeholder="your password" name="password" required="required" />
-                    <button type="submit" class="btn btn-lg btn-primary btn-block">Send</button>
-                </form>
+            <div class="starter-template form-sign-in">
+                <h2 class="form-sign-in-heading">Please login</h2>
+                <input class="form-control" type="text" placeholder="your login name" id="login" required="required" />
+                <input class="form-control" type="password" placeholder="your password" id="password" required="required" />
+                <button onclick="postLogin()" class="btn btn-lg btn-primary btn-block">Send</button>
             </div>
         </div>
     </div>

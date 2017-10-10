@@ -1,6 +1,5 @@
 package platform.gateway.web.dto;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import platform.gateway.entity.enumeration.Gender;
 
 import java.io.Serializable;
@@ -33,7 +32,7 @@ public class UserDTO implements Serializable {
 
     private Date updatedDate;
 
-    private Bool deleted;
+    private Boolean deleted;
 
     public String getId() {
         return id;
@@ -123,11 +122,11 @@ public class UserDTO implements Serializable {
         this.updatedDate = updatedDate;
     }
 
-    public Bool getDeleted() {
+    public Boolean getDeleted() {
         return deleted;
     }
 
-    public void setDeleted(Bool deleted) {
+    public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
 
